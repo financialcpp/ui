@@ -10,7 +10,7 @@
                 ul
                   li
                     a(@click.prevent='currentBacktest = null')
-                      b-icon(icon='vial', size='sm', type='is-primary')
+                      b-icon(icon='vial', size='sm')
                       | Backtests
                   li.is-active
                     a {{ currentBacktest.strategy }}
@@ -18,7 +18,7 @@
                         | {{ currentBacktest.id }}
 
             .has-text-centered.is-size-4(v-else)
-              b-icon.icon-left(icon='vial', size='sm', type='is-primary')
+              b-icon.icon-left(icon='vial', size='sm')
               | Backtests
           .column.is-12(v-if='currentBacktest')
           .column.is-12(v-else)
@@ -66,7 +66,7 @@
                             v-for='range in presetDateRanges',
                             :label='range.label',
                             @click='dateRangeClicked(range)',
-                            :class='{ "is-primary": range.label == dateRangeSelected }'
+                            :class='{ "is-white": range.label == dateRangeSelected }'
                           )
                       .column.is-6
                         b-field(label='From')
@@ -95,9 +95,8 @@
                               value='fake'
                             )
                       .column.is-6
-                        b-button(@click='submit', :type='submitButton.type') 
+                        b-button(@click='submit') 
                           span.has-text-gray.has-text-weight-bold {{ submitButton.label }}
-                          span.is-size-4 🚀💎✋
               .column.is-12.my-3
                 .is-size-5.has-text-success
                   b-icon.icon-left(icon='history', size='sm')
@@ -133,7 +132,7 @@
                   | {{ props.option }}
         .column.is-12.full-height
           div(ref='chart')
-            simple-chart(
+            fpp-chart(
               v-if='showChart',
               :symbol='tickerSearch',
               :chart='chart',
@@ -143,19 +142,12 @@
 
 <script>
 import gql from 'graphql-tag'
-import Fuse from 'fuse.js'
+
 import { DateTime, Duration } from 'luxon'
 import ResizeSensor from 'css-element-queries/src/ResizeSensor'
 
+
 export default {
-  watch: {
-    tickHistory() {
-      this.showChart = true
-    },
-  },
-  beforeMount() {
-    this.$options.components.SimpleChart = require('../../components/chart/Chart.vue').default
-  },
   mounted() {
     this.$nextTick(() => {
       new ResizeSensor(this.$refs.chart, (event) => {
@@ -249,7 +241,7 @@ export default {
             $fromDate: String
             $toDate: String
             $symbols: String
-            $strategy: String
+            $strategy: Strategy
             $provider: String
           ) {
             submitBacktest(
@@ -259,21 +251,23 @@ export default {
               strategy: $strategy
               provider: $provider
             ) {
-              message
-              success
-              backtest {
-                id
-                start
-                progress
-              }
+              submissionId
             }
           }
         `,
         variables: {
           fromDate: this.date1,
           toDate: this.date2,
-          symbols: this.symbolsSelected,
-          strategy: this.strategySelected,
+          symbols: {
+            name: this.symbolsSelected
+          },
+          strategy: {
+            name: this.strategySelected,
+            options: JSON.stringify({
+              my_option1: 2,
+              my_option2: 2
+            })
+          },
           provider: this.dataProviderSelected,
         },
       })
@@ -288,14 +282,7 @@ export default {
         this.date2 = range.to
       }
     },
-    onSearch({ item: { name } }) {
-      this.tickerSearch = name
-    },
-    onTyping(text) {
-      if (text) {
-        this.tickerSearch = text
-      }
-    },
+    
   },
   apollo: {
     symbols: {
@@ -414,15 +401,7 @@ export default {
     //   let search = this.tickerSearch || ''
     //   return this.fuseSymbols.search(search)
     // },
-    ticker: {
-      get() {
-        return this.tickerSearch
-      },
-      set(value) {
-        console.log(value)
-        this.tickerSearch = value
-      },
-    },
+    
   },
 }
 </script>

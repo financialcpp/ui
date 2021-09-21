@@ -8,3 +8,8 @@ ElementQueries.listen();
 // have rules attached (make sure this is called after 'load' event, because
 // CSS files are not ready when domReady is fired.
 ElementQueries.init();
+
+import Vue from 'vue'
+import FppChart from '~/components/chart/FppChart.vue'
+
+Vue.component('FppChart', FppChart)

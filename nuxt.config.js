@@ -49,7 +49,7 @@ export default {
      ** Auto import components
      ** See https://nuxtjs.org/api/configuration-components
      */
-    components: true,
+    components: false,
     /*
      ** Nuxt.js dev-modules
      */
@@ -71,7 +71,7 @@ export default {
     apollo: {
         clientConfigs: {
             default: {
-                httpEndpoint: 'http://localhost:3000/graphql',
+                httpEndpoint: 'http://localhost:3001/graphql',
             },
         },
     },
@@ -96,9 +96,5 @@ export default {
                 })
             )
         },
-    },
-
-    serverMiddleware: {
-        '/graphql': '~/graphql',
-    },
+    }
 }

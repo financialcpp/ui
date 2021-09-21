@@ -25,6 +25,7 @@ $background: $background-10;
 $scheme-main: $background-5;
 // $body-background-color: $background-5;
 
+
 // Box
 $box-background-color: $background-10;
 $box-shadow: 2px 2px 5px $background-3;
@@ -117,6 +118,11 @@ $link-hover: #416909;
 @import '~bulma';
 @import '~buefy/src/scss/buefy';
 
+// autocomplete
+.dropdown-item, .dropdown .dropdown-menu .has-link a {
+  color: $white;
+}
+
 .icon-left {
   padding-right: 20px;
 }
@@ -140,8 +146,8 @@ $datepicker-radius:$dropdown-content-radius;
 $datepicker-shadow:$dropdown-content-shadow;
 $datepicker-header-color:$grey;
 $datepicker-today-border: solid 1px rgba($primary, 0.5);
-$datepicker-item-color:$grey-dark;
-$datepicker-item-disabled-color:$grey-light;
+$datepicker-item-color: white;
+$datepicker-item-disabled-color:grey-dark;
 $datepicker-item-hover-color:$scheme-invert;
 $datepicker-item-hover-background-color:$background;
 $datepicker-item-selected-color:$primary-invert;

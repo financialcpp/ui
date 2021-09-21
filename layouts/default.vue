@@ -20,10 +20,10 @@
             exact
           ) backtest
           nuxt-link.navbar-item(
-            to='/study',
+            to='/filters',
             active-class='has-text-info',
             exact
-          ) study
+          ) filters
           nuxt-link.navbar-item(
             to='/server',
             active-class='has-text-info',
